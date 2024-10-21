@@ -5,10 +5,8 @@ import agh.ics.oop.model.MoveDirection;
 public class World {
     public static void main(String[] args) {
         System.out.println("Start");
-
         MoveDirection[] dirs = OptionsParser.parse(args);
         run(dirs);
-
         System.out.println("Stop");
     }
     private static void run(MoveDirection[] dirs) {
@@ -21,8 +19,13 @@ public class World {
             }
         }
     }
-    /*
     private static void run(String[] args) {
+
+        for (int i = 0; i < (args.length - 1); i++) {
+            System.out.print(args[i] + ", ");
+        }
+        System.out.println(args[args.length - 1]);
+
         for (String arg : args) {
             switch (arg) {
                 case "f" -> System.out.println("Zwierzak idzie do przodu");
@@ -32,5 +35,4 @@ public class World {
             }
         }
     }
-    */
 }
