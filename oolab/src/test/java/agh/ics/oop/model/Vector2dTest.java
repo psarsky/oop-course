@@ -12,10 +12,9 @@ class Vector2dTest {
         Vector2d v3 = new Vector2d(1, -2);
         Vector2d v4 = null;
 
-        assertTrue(v1.equals(v2));
-        assertFalse(v1.equals(v3));
-        assertFalse(v1.equals(v4));
-        assertFalse(v4.equals(v1));
+        assertEquals(v1, v2);
+        assertNotEquals(v1, v3);
+        assertNotEquals(v1, v4);
     }
 
     @Test
