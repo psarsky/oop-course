@@ -9,18 +9,41 @@ import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 class OptionsParserTest {
 
     @Test
-    void parse() {
+    void parseCorrectInput() {
         // given
-        String[] input1 = {"f", "b", "r", "l"};
-        String[] input2 = {"f", "fdhbfv", "b", "eeee", "r", "", "l", "uwuwuewue"};
+        String[] input = {"f", "b", "r", "l"};
         MoveDirection[] expectedResult = {MoveDirection.FORWARD, MoveDirection.BACKWARD, MoveDirection.RIGHT, MoveDirection.LEFT};
 
         // when
-        MoveDirection[] result1 = OptionsParser.parse(input1);
-        MoveDirection[] result2 = OptionsParser.parse(input2);
+        MoveDirection[] result = OptionsParser.parse(input);
 
         // then
-        assertArrayEquals(expectedResult, result1);
-        assertArrayEquals(expectedResult, result2);
+        assertArrayEquals(expectedResult, result);
+    }
+
+    @Test
+    void parseMixedInput() {
+        // given
+        String[] input = {"f", "fdhbfv", "b", "eeee", "r", "", "l", "uwuwuewue"};
+        MoveDirection[] expectedResult = {MoveDirection.FORWARD, MoveDirection.BACKWARD, MoveDirection.RIGHT, MoveDirection.LEFT};
+
+        // when
+        MoveDirection[] result = OptionsParser.parse(input);
+
+        // then
+        assertArrayEquals(expectedResult, result);
+    }
+
+    @Test
+    void parseIncorrectInput() {
+        // given
+        String[] input = {"fdhbfv", "eeee", "", "uwuwuewue"};
+        MoveDirection[] expectedResult = {};
+
+        // when
+        MoveDirection[] result = OptionsParser.parse(input);
+
+        // then
+        assertArrayEquals(expectedResult, result);
     }
 }

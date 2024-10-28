@@ -6,17 +6,32 @@ import static org.junit.jupiter.api.Assertions.*;
 class Vector2dTest {
 
     @Test
-    void equals() {
+    void equalsSameVectors() {
         // when
         Vector2d v1 = new Vector2d(1, 2);
         Vector2d v2 = new Vector2d(1, 2);
-        Vector2d v3 = new Vector2d(1, -2);
-        Vector2d v4 = null;
 
         // then
         assertEquals(v1, v2);
-        assertNotEquals(v1, v3);
-        assertNotEquals(v1, v4);
+    }
+
+    @Test
+    void equalsDifferentVectors() {
+        // when
+        Vector2d v1 = new Vector2d(1, 2);
+        Vector2d v2 = new Vector2d(1, -2);
+
+        // then
+        assertNotEquals(v1, v2);
+    }
+
+    @Test
+    void equalsOneIsNull() {
+        // when
+        Vector2d v = new Vector2d(1, 2);
+
+        // then
+        assertNotEquals(v, null);
     }
 
     @Test
@@ -32,85 +47,156 @@ class Vector2dTest {
     }
 
     @Test
-    void precedes() {
+    void precedesSameVectors() {
         // given
-        Vector2d v1_1 = new Vector2d(2, 5);
-        Vector2d v2_1 = new Vector2d(1, 3);
-        Vector2d v4_1 = new Vector2d(2, 5);
-        Vector2d v4_2 = new Vector2d(1, 3);
+        Vector2d v1 = new Vector2d(2, 5);
 
         // when
-        Vector2d v1_2 = new Vector2d(2, 5);
-        Vector2d v2_2 = new Vector2d(2, 5);
-        Vector2d v3_2 = new Vector2d(1, 3);
-        Vector2d v3_1 = new Vector2d(0, 5);
+        Vector2d v2 = new Vector2d(2, 5);
 
         // then
-        assertTrue(v1_1.precedes(v1_2));
-        assertTrue(v2_1.precedes(v2_2));
-        assertFalse(v3_1.precedes(v3_2));
-        assertFalse(v4_1.precedes(v4_2));
+        assertTrue(v1.precedes(v2));
     }
 
     @Test
-    void follows() {
+    void precedesDifferentVectorsCorrect() {
         // given
-        Vector2d v1_1 = new Vector2d(2, 5);
-        Vector2d v2_1 = new Vector2d(1, 3);
-        Vector2d v3_1 = new Vector2d(0, 5);
-        Vector2d v4_1 = new Vector2d(2, 5);
+        Vector2d v1 = new Vector2d(1, 3);
 
         // when
-        Vector2d v1_2 = new Vector2d(2, 5);
-        Vector2d v2_2 = new Vector2d(2, 5);
-        Vector2d v3_2 = new Vector2d(1, 3);
-        Vector2d v4_2 = new Vector2d(1, 3);
+        Vector2d v2 = new Vector2d(2, 5);
 
         // then
-        assertTrue(v1_1.follows(v1_2));
-        assertTrue(v2_2.follows(v2_1));
-        assertFalse(v3_2.follows(v3_1));
-        assertFalse(v4_2.follows(v4_1));
+        assertTrue(v1.precedes(v2));
     }
 
     @Test
-    void upperRight() {
+    void precedesDifferentVectorsIncorrect() {
         // given
-        Vector2d v1_1 = new Vector2d(2, 5);
-        Vector2d v1_2 = new Vector2d(1, -3);
-        Vector2d v2_1 = new Vector2d(2, 5);
-        Vector2d v2_2 = new Vector2d(1, 10);
-        Vector2d expectedResult1 = new Vector2d(2, 5);
-        Vector2d expectedResult2 = new Vector2d(2, 10);
+        Vector2d v1 = new Vector2d(2, 5);
 
         // when
-        Vector2d result1 = v1_1.upperRight(v1_2);
-        Vector2d result2 = v2_1.upperRight(v2_2);
+        Vector2d v2 = new Vector2d(1, 3);
 
         // then
-        assertEquals(expectedResult1, result1);
-        assertEquals(expectedResult2, result2);
+        assertFalse(v1.precedes(v2));
     }
 
     @Test
-    void lowerLeft() {
+    void precedesNeitherVectorPrecedes() {
         // given
-        Vector2d v1_1 = new Vector2d(2, 5);
-        Vector2d v1_2 = new Vector2d(1, -3);
-        Vector2d v2_1 = new Vector2d(2, 5);
-        Vector2d v2_2 = new Vector2d(1, 10);
-        Vector2d expectedResult1 = new Vector2d(1, -3);
-        Vector2d expectedResult2 = new Vector2d(1, 5);
+        Vector2d v1 = new Vector2d(1, 3);
 
         // when
-        Vector2d result1 = v1_1.lowerLeft(v1_2);
-        Vector2d result2 = v2_1.lowerLeft(v2_2);
+        Vector2d v2 = new Vector2d(0, 5);
 
         // then
-        assertEquals(expectedResult1, result1);
-        assertEquals(expectedResult2, result2);
+        assertFalse(v1.precedes(v2));
     }
 
+    @Test
+    void followsSameVectors() {
+        // given
+        Vector2d v1 = new Vector2d(2, 5);
+
+        // when
+        Vector2d v2 = new Vector2d(2, 5);
+
+        // then
+        assertTrue(v1.follows(v2));
+    }
+
+    @Test
+    void followsDifferentVectorsCorrect() {
+        // given
+        Vector2d v1 = new Vector2d(2, 5);
+
+        // when
+        Vector2d v2 = new Vector2d(1, 3);
+
+        // then
+        assertTrue(v1.follows(v2));
+    }
+
+    @Test
+    void followsDifferentVectorsIncorrect() {
+        // given
+        Vector2d v1 = new Vector2d(1, 3);
+
+        // when
+        Vector2d v2 = new Vector2d(2, 5);
+
+        // then
+        assertFalse(v1.follows(v2));
+    }
+
+    @Test
+    void followsNeitherVectorFollows() {
+        // given
+        Vector2d v1 = new Vector2d(1, 3);
+
+        // when
+        Vector2d v2 = new Vector2d(0, 5);
+
+        // then
+        assertFalse(v1.follows(v2));
+    }
+
+    @Test
+    void upperRightIsV1() {
+        // given
+        Vector2d v1 = new Vector2d(2, 5);
+        Vector2d v2 = new Vector2d(1, -3);
+        Vector2d expectedResult = new Vector2d(2, 5);
+
+        // when
+        Vector2d result = v1.upperRight(v2);
+
+        // then
+        assertEquals(expectedResult, result);
+    }
+
+    @Test
+    void upperRightIsCombination() {
+        // given
+        Vector2d v1 = new Vector2d(2, 5);
+        Vector2d v2 = new Vector2d(1, 10);
+        Vector2d expectedResult = new Vector2d(2, 10);
+
+        // when
+        Vector2d result = v1.upperRight(v2);
+
+        // then
+        assertEquals(expectedResult, result);
+    }
+
+    @Test
+    void lowerLeftIsV1() {
+        // given
+        Vector2d v1 = new Vector2d(1, -3);
+        Vector2d v2 = new Vector2d(2, 5);
+        Vector2d expectedResult = new Vector2d(1, -3);
+
+        // when
+        Vector2d result = v1.lowerLeft(v2);
+
+        // then
+        assertEquals(expectedResult, result);
+    }
+
+    @Test
+    void lowerLeftIsCombination() {
+        // given
+        Vector2d v1 = new Vector2d(2, 5);
+        Vector2d v2 = new Vector2d(1, 10);
+        Vector2d expectedResult = new Vector2d(1, 5);
+
+        // when
+        Vector2d result = v1.lowerLeft(v2);
+
+        // then
+        assertEquals(expectedResult, result);
+    }
 
     @Test
     void add() {
@@ -143,17 +229,26 @@ class Vector2dTest {
     @Test
     void opposite() {
         // given
-        Vector2d v1 = new Vector2d(2, 5);
-        Vector2d v2 = new Vector2d(0, 0);
-        Vector2d expectedResult1 = new Vector2d(-2, -5);
-        Vector2d expectedResult2 = new Vector2d(0, 0);
+        Vector2d v = new Vector2d(2, 5);
+        Vector2d expectedResult = new Vector2d(-2, -5);
 
         // when
-        Vector2d result1 = v1.opposite();
-        Vector2d result2 = v2.opposite();
+        Vector2d result = v.opposite();
 
         // then
-        assertEquals(expectedResult1, result1);
-        assertEquals(expectedResult2, result2);
+        assertEquals(expectedResult, result);
+    }
+
+    @Test
+    void oppositeZeroVector() {
+        // given
+        Vector2d v = new Vector2d(0, 0);
+        Vector2d expectedResult = new Vector2d(0, 0);
+
+        // when
+        Vector2d result = v.opposite();
+
+        // then
+        assertEquals(expectedResult, result);
     }
 }
