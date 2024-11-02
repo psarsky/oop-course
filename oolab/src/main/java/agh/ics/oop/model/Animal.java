@@ -18,21 +18,15 @@ public class Animal {
         return this.position.equals(position);
     }
     public void move(MoveDirection direction) {
+        Vector2d newPosition = position;
         switch (direction) {
             case RIGHT -> this.direction = this.direction.next();
             case LEFT -> this.direction = this.direction.previous();
-            case FORWARD -> {
-                Vector2d newPosition = this.position.add(this.direction.toUnitVector());
-                if(newPosition.precedes(upperRightBound) && newPosition.follows(lowerLeftBound)) {
-                    this.position = newPosition;
-                }
-            }
-            case BACKWARD -> {
-                Vector2d newPosition = this.position.subtract(this.direction.toUnitVector());
-                if(newPosition.precedes(upperRightBound) && newPosition.follows(lowerLeftBound)) {
-                    this.position = newPosition;
-                }
-            }
+            case FORWARD -> newPosition = position.add(this.direction.toUnitVector());
+            case BACKWARD -> newPosition = this.position.subtract(this.direction.toUnitVector());
+        }
+        if(newPosition.precedes(upperRightBound) && newPosition.follows(lowerLeftBound)) {
+            this.position = newPosition;
         }
     }
     @Override
