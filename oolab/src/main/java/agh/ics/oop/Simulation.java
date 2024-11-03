@@ -29,4 +29,8 @@ public class Simulation {
             animalIndex = (animalIndex + 1) % animalCount;
         }
     }
+
+    public Animal getAnimal(int index) {
+        return animals.get(index);
+    }
 }
