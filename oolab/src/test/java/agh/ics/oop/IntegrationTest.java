@@ -9,7 +9,6 @@ import java.util.List;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
-
 class IntegrationTest {
 
     @Test
@@ -43,23 +42,23 @@ class IntegrationTest {
 
     @Test
     public void withinBounds() {
-        Animal animal = new Animal(new Vector2d(0, 0));
+        Animal animal = new Animal(Animal.LOWER_LEFT_BOUND);
 
         animal.move(MoveDirection.BACKWARD);
-        assertEquals(new Vector2d(0, 0), animal.getPos());
+        assertEquals(Animal.LOWER_LEFT_BOUND, animal.getPos());
 
         animal.move(MoveDirection.LEFT);
         animal.move(MoveDirection.FORWARD);
-        assertEquals(new Vector2d(0, 0), animal.getPos());
+        assertEquals(Animal.LOWER_LEFT_BOUND, animal.getPos());
 
-        animal.setPos(new Vector2d(4, 4));
+        animal.setPos(Animal.UPPER_RIGHT_BOUND);
         animal.setDir(MapDirection.NORTH);
         animal.move(MoveDirection.FORWARD);
-        assertEquals(new Vector2d(4, 4), animal.getPos());
+        assertEquals(Animal.UPPER_RIGHT_BOUND, animal.getPos());
 
         animal.move(MoveDirection.RIGHT);
         animal.move(MoveDirection.FORWARD);
-        assertEquals(new Vector2d(4, 4), animal.getPos());
+        assertEquals(Animal.UPPER_RIGHT_BOUND, animal.getPos());
     }
 
     @Test

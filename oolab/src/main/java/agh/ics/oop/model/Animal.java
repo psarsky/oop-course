@@ -3,8 +3,8 @@ package agh.ics.oop.model;
 public class Animal {
     private MapDirection direction;
     private Vector2d position;
-    public static final Vector2d upperRightBound = new Vector2d(4, 4);
-    public static final Vector2d lowerLeftBound = new Vector2d(0, 0);
+    public static final Vector2d UPPER_RIGHT_BOUND = new Vector2d(4, 4);
+    public static final Vector2d LOWER_LEFT_BOUND = new Vector2d(0, 0);
 
     public Animal() {
         this.direction = MapDirection.NORTH;
@@ -25,7 +25,7 @@ public class Animal {
             case FORWARD -> newPosition = position.add(this.direction.toUnitVector());
             case BACKWARD -> newPosition = this.position.subtract(this.direction.toUnitVector());
         }
-        if(newPosition.precedes(upperRightBound) && newPosition.follows(lowerLeftBound)) {
+        if(newPosition.precedes(UPPER_RIGHT_BOUND) && newPosition.follows(LOWER_LEFT_BOUND)) {
             this.position = newPosition;
         }
     }
