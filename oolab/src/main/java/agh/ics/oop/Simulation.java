@@ -52,4 +52,8 @@ public class Simulation {
     public Animal getAnimal(int index) {
         return animals.get(index);
     }
+
+    public List<Animal> getAnimals() {
+        return animals;
+    }
 }
