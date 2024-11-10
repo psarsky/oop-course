@@ -42,14 +42,6 @@ public class Animal {
         };
     }
 
-    public void setDir(MapDirection direction) {
-        this.direction = direction;
-    }
-
-    public void setPos(Vector2d position) {
-        this.position = position;
-    }
-
     public MapDirection getDir() {
         return direction;
     }
