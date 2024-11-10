@@ -3,7 +3,7 @@ package agh.ics.oop.model;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TextMap implements WorldMap<String, Integer> {
+public class TextMap implements WorldNumberPositionMap<String, Integer> {
 
     private final List<String> objects = new ArrayList<>();
 
@@ -15,6 +15,7 @@ public class TextMap implements WorldMap<String, Integer> {
 
     @Override
     public void move(String object, MoveDirection direction) {
+
         int currentIndex = objects.indexOf(object);
 
         if (currentIndex == -1) return;
