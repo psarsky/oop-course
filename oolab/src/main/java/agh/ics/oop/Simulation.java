@@ -1,9 +1,11 @@
 package agh.ics.oop;
 
 import agh.ics.oop.model.MoveDirection;
+import agh.ics.oop.model.Vector2d;
 import agh.ics.oop.model.WorldMap;
 
 import java.util.List;
+import java.util.Map;
 
 public class Simulation<T, P> {
 
@@ -18,13 +20,19 @@ public class Simulation<T, P> {
         this.objects = objects;
 
         for (int i = 0; i < objects.size(); i++) {
-            map.place(objects.get(i), initialPositions.get(i));
+            if(!map.place(objects.get(i), initialPositions.get(i))) {
+                objects.remove(i);
+                initialPositions.remove(i);
+                i--;
+            }
         }
+        System.out.println(this);
     }
 
     public void run() {
 
         int objectIndex = 0;
+
         int objectCount = objects.size();
 
         for (MoveDirection move : moves) {
@@ -48,5 +56,9 @@ public class Simulation<T, P> {
 
     public List<T> getObjects() {
         return objects;
+    }
+
+    public Map<T, Vector2d> getPosition() {
+        return map.getPositions();
     }
 }

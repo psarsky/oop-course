@@ -80,4 +80,9 @@ public class RectangularMap<T> implements WorldMap<T, Vector2d> {
         if (!isOccupied(position)) return null;
         return objects.get(position);
     }
+
+    @Override
+    public Map<T, Vector2d> getPositions() {
+        return objectsReverse;
+    }
 }

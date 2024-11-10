@@ -2,6 +2,7 @@ package agh.ics.oop.model;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import static java.util.Collections.swap;
 
@@ -45,6 +46,11 @@ public class TextMap implements WorldNumberPositionMap<String, Integer> {
     @Override
     public boolean canMoveTo(Integer position) {
         return isOccupied(position);
+    }
+
+    @Override
+    public Map<String, Vector2d> getPositions() {
+        return Map.of();
     }
 
     @Override

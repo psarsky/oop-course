@@ -1,5 +1,8 @@
 package agh.ics.oop.model;
 
+import java.util.List;
+import java.util.Map;
+
 /**
  * The interface responsible for interacting with the map of the world.
  * Assumes that Vector2d and MoveDirection classes are defined.
@@ -46,5 +49,7 @@ public interface WorldMap<T, P> {
      * @return True if the object can move there.
      */
     boolean canMoveTo(P position);
+
+    Map<T, Vector2d> getPositions();
 }
 
