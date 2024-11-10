@@ -3,6 +3,8 @@ package agh.ics.oop.model;
 import java.util.ArrayList;
 import java.util.List;
 
+import static java.util.Collections.swap;
+
 public class TextMap implements WorldNumberPositionMap<String, Integer> {
 
     private final List<String> objects = new ArrayList<>();
@@ -25,9 +27,8 @@ public class TextMap implements WorldNumberPositionMap<String, Integer> {
             case BACKWARD, LEFT -> currentIndex - 1;
         };
 
-        if (newIndex >= 0 && newIndex < objects.size()) {
-            String swapped = objects.set(newIndex, object);
-            objects.set(currentIndex, swapped);
+        if (canMoveTo(newIndex)) {
+            swap(objects, currentIndex, newIndex);
         }
     }
 
@@ -48,6 +49,10 @@ public class TextMap implements WorldNumberPositionMap<String, Integer> {
 
     @Override
     public String toString() {
-        return objects.toString();
+        StringBuilder str = new StringBuilder();
+        for (String s : objects)
+            str.append(s).append(" ");
+        if (!str.isEmpty()) str = new StringBuilder(str.substring(0, str.length() - 1));
+        return str.toString();
     }
 }

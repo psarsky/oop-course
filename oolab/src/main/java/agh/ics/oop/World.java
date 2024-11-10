@@ -19,7 +19,7 @@ public class World {
 
         List<String> strings = List.of("Ala", "ma", "sowoniedźwiedzia");
         List<Integer> ints = List.of(0, 0, 0);
-        Simulation<String, Integer> simulation2 = new Simulation<String, Integer>(strings, ints, directions, new TextMap());
+        Simulation<String, Integer> simulation2 = new Simulation<>(strings, ints, directions, new TextMap());
         simulation2.run();
 
         System.out.println("STOP");
