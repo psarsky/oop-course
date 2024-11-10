@@ -1,46 +1,39 @@
 package agh.ics.oop;
 
-import agh.ics.oop.model.Animal;
 import agh.ics.oop.model.MoveDirection;
-import agh.ics.oop.model.RectangularMap;
-import agh.ics.oop.model.Vector2d;
+import agh.ics.oop.model.WorldMap;
 
-import java.util.ArrayList;
 import java.util.List;
 
-public class Simulation {
+public class Simulation<T, P> {
 
-    private final List<Animal> animals;
+    private final List<T> objects;
     private final List<MoveDirection> moves;
-    private final RectangularMap map;
+    private final WorldMap<T, P> map;
 
-    public Simulation(List<Vector2d> initialPositions, List<MoveDirection> moves, RectangularMap map) {
+    public Simulation(List<T> objects, List<P> initialPositions, List<MoveDirection> moves, WorldMap<T, P> map) {
 
-        this.moves = moves;
         this.map = map;
-        animals = new ArrayList<>();
+        this.moves = moves;
+        this.objects = objects;
 
-        for(Vector2d pos : initialPositions) {
-            Animal animal = new Animal(pos);
-            if (this.map.place(animal)) {
-                animals.add(animal);
-                System.out.println(map);
-            }
+        for (int i = 0; i < objects.size(); i++) {
+            map.place(objects.get(i), initialPositions.get(i));
         }
     }
 
     public void run() {
 
-        int animalIndex = 0;
-        int animalCount = animals.size();
+        int objectIndex = 0;
+        int objectCount = objects.size();
 
         for (MoveDirection move : moves) {
-            if (animalIndex > animalCount - 1) {
+            if (objectIndex > objectCount - 1) {
                 break;
             }
-            map.move(animals.get(animalIndex), move);
+            map.move(objects.get(objectIndex), move);
             System.out.println(map);
-            animalIndex = (animalIndex + 1) % animalCount;
+            objectIndex = (objectIndex + 1) % objectCount;
         }
     }
 
@@ -49,11 +42,11 @@ public class Simulation {
         return map.toString();
     }
 
-    public Animal getAnimal(int index) {
-        return animals.get(index);
+    public T getObject(int index) {
+        return objects.get(index);
     }
 
-    public List<Animal> getAnimals() {
-        return animals;
+    public List<T> getObjects() {
+        return objects;
     }
 }
