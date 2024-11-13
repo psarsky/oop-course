@@ -1,16 +1,21 @@
 package agh.ics.oop.model;
 
-import agh.ics.oop.model.util.MapVisualizer;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Random;
 
-import java.util.*;
 import static java.lang.Math.sqrt;
 
-public class GrassField implements WorldMap {
+public class GrassField extends AbstractWorldMap {
 
-    private final Map<Vector2d, Animal> animals = new HashMap<>();
     private final Map<Vector2d, Grass> grass = new HashMap<>();
 
     public GrassField(int count) {
+
+        super();
+        Vector2d rightUp = new Vector2d((int)Math.sqrt(count*10), (int)Math.sqrt(count*10));
 
         Random random = new Random();
         int x;
@@ -28,17 +33,11 @@ public class GrassField implements WorldMap {
     }
 
     @Override
-    public String toString() {
-        MapVisualizer visualizer = new MapVisualizer(this);
-        return visualizer.draw(getLowerLeft(), getUpperRight());
-    }
-
-    @Override
     public WorldElement objectAt(Vector2d position) {
-        if (isOccupied(position)) {
-            return animals.get(position);
+        if (!isOccupied(position)) {
+            return grass.get(position);
         }
-        return grass.get(position);
+        return super.objectAt(position);
     }
 
     @Override
@@ -46,6 +45,7 @@ public class GrassField implements WorldMap {
         return !isOccupied(position);
     }
 
+    @Override
     public Vector2d getUpperRight() {
         Vector2d upperRight = new Vector2d(0, 0);
         for (WorldElement we : getElements()) {
@@ -54,7 +54,8 @@ public class GrassField implements WorldMap {
         return upperRight.add(new Vector2d(1, 1));
     }
 
-    private Vector2d getLowerLeft() {
+    @Override
+    public Vector2d getLowerLeft() {
         Vector2d lowerLeft = new Vector2d(0, 0);
         for (WorldElement we : getElements()) {
             lowerLeft = we.getPos().lowerLeft(lowerLeft);
@@ -62,32 +63,10 @@ public class GrassField implements WorldMap {
         return lowerLeft.subtract(new Vector2d(1, 1));
     }
 
+    @Override
     public List<WorldElement> getElements() {
         List<WorldElement> worldElements = new ArrayList<>(animals.values());
         worldElements.addAll(grass.values());
         return worldElements;
-    }
-
-    @Override
-    public void move(Animal animal, MoveDirection direction) {
-        if (Objects.equals(objectAt(animal.getPos()), animal)) {
-            animals.remove(animal.getPos());
-            animal.move(direction, this);
-            animals.put(animal.getPos(), animal);
-        }
-    }
-
-    @Override
-    public boolean place(Animal animal) {
-        if (!canMoveTo(animal.getPos())) {
-            return false;
-        }
-        animals.put(animal.getPos(), animal);
-        return true;
-    }
-
-    @Override
-    public boolean isOccupied(Vector2d position) {
-        return animals.containsKey(position);
     }
 }
