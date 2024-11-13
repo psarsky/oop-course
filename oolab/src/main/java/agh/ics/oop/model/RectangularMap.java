@@ -13,13 +13,36 @@ public class RectangularMap implements WorldMap {
     private final Vector2d upperRight;
 
     public RectangularMap(int width, int height) {
-        this.upperRight = new Vector2d(width, height);
+        upperRight = new Vector2d(width, height);
+    }
+
+    public boolean withinBounds(Vector2d position) {
+        return (position.follows(LOWER_LEFT) && position.precedes(upperRight));
     }
 
     @Override
     public String toString() {
         MapVisualizer visualizer = new MapVisualizer(this);
         return visualizer.draw(LOWER_LEFT, upperRight);
+    }
+
+    @Override
+    public void move(Animal animal, MoveDirection direction) {
+        if (Objects.equals(objectAt(animal.getPos()), animal)) {
+            animals.remove(animal.getPos());
+            animal.move(direction, this);
+            animals.put(animal.getPos(), animal);
+        }
+    }
+
+    @Override
+    public WorldElement objectAt(Vector2d position) {
+        return animals.get(position);
+    }
+
+    @Override
+    public boolean canMoveTo(Vector2d position) {
+        return (withinBounds(position) && !isOccupied(position));
     }
 
     @Override
@@ -32,25 +55,7 @@ public class RectangularMap implements WorldMap {
     }
 
     @Override
-    public void move(Animal animal, MoveDirection direction) {
-        if (Objects.equals(objectAt(animal.getPos()), animal)) {
-        animals.remove(animal.getPos());
-        animal.move(direction, this);
-        animals.put(animal.getPos(), animal);
-        }
-    }
-
-    @Override
-    public boolean canMoveTo(Vector2d position) {
-        return (withinBounds(position) && !isOccupied(position));
-    }
-
-    @Override
-    public Animal objectAt(Vector2d position) {
-        return animals.get(position);
-    }
-
-    public boolean withinBounds(Vector2d position) {
-        return (position.follows(LOWER_LEFT) && position.precedes(upperRight));
+    public boolean isOccupied(Vector2d position) {
+        return animals.containsKey(position);
     }
 }

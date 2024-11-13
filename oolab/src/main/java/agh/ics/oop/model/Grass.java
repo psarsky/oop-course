@@ -8,7 +8,6 @@ public class Grass implements WorldElement {
         this.position = position;
     }
 
-    @Override
     public boolean isAt(Vector2d position) {
         return this.position.equals(position);
     }
