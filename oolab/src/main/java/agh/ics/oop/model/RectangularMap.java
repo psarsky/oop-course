@@ -19,7 +19,7 @@ public class RectangularMap extends AbstractWorldMap {
 
     @Override
     public boolean canMoveTo(Vector2d position) {
-        return (withinBounds(position) && !isOccupied(position));
+        return (withinBounds(position) && super.canMoveTo(position));
     }
 
     @Override

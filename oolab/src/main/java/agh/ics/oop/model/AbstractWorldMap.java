@@ -30,6 +30,11 @@ public abstract class AbstractWorldMap implements WorldMap {
     }
 
     @Override
+    public boolean canMoveTo(Vector2d position) {
+        return !isOccupied(position);
+    }
+
+    @Override
     public void move(Animal animal, MoveDirection direction) {
         if (Objects.equals(objectAt(animal.getPos()), animal)) {
             animals.remove(animal.getPos());

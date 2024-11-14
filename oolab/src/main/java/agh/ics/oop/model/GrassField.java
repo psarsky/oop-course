@@ -1,10 +1,11 @@
 package agh.ics.oop.model;
 
+import agh.ics.oop.model.util.RandomPositionGenerator;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Random;
 
 import static java.lang.Math.sqrt;
 
@@ -12,23 +13,14 @@ public class GrassField extends AbstractWorldMap {
 
     private final Map<Vector2d, Grass> grass = new HashMap<>();
 
-    public GrassField(int count) {
+    public GrassField(int grassCount) {
 
         super();
-        Vector2d rightUp = new Vector2d((int)Math.sqrt(count*10), (int)Math.sqrt(count*10));
+        Vector2d upperRight = new Vector2d((int)sqrt(grassCount*10), (int)sqrt(grassCount*10));
+        RandomPositionGenerator randomPositionGenerator = new RandomPositionGenerator(upperRight.getX(), upperRight.getY(), grassCount);
 
-        Random random = new Random();
-        int x;
-        int y;
-        Vector2d pos;
-
-        for (int i = 0; i < count; i++) {
-            do {
-                x = random.nextInt((int) sqrt(count * 10));
-                y = random.nextInt((int) sqrt(count * 10));
-                pos = new Vector2d(x, y);
-            } while (objectAt(pos) != null);
-            grass.put(pos, new Grass(pos));
+        for (Vector2d grassPosition : randomPositionGenerator) {
+            grass.put(grassPosition, new Grass(grassPosition));
         }
     }
 
@@ -38,11 +30,6 @@ public class GrassField extends AbstractWorldMap {
             return grass.get(position);
         }
         return super.objectAt(position);
-    }
-
-    @Override
-    public boolean canMoveTo(Vector2d position) {
-        return !isOccupied(position);
     }
 
     @Override
