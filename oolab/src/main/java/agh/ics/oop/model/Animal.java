@@ -1,6 +1,6 @@
 package agh.ics.oop.model;
 
-public class Animal {
+public class Animal implements WorldElement {
 
     private MapDirection direction;
     private Vector2d position;
@@ -15,8 +15,14 @@ public class Animal {
         this.position = position;
     }
 
-    public boolean isAt(Vector2d position) {
-        return this.position.equals(position);
+    @Override
+    public String toString() {
+        return switch(direction) {
+            case NORTH -> "^";
+            case SOUTH -> "v";
+            case EAST -> ">";
+            case WEST -> "<";
+        };
     }
 
     public void move(MoveDirection direction, MoveValidator validator) {
@@ -32,14 +38,8 @@ public class Animal {
         }
     }
 
-    @Override
-    public String toString() {
-        return switch(direction) {
-            case NORTH -> "^";
-            case SOUTH -> "v";
-            case EAST -> ">";
-            case WEST -> "<";
-        };
+    public boolean isAt(Vector2d position) {
+        return this.position.equals(position);
     }
 
     public MapDirection getDir() {
