@@ -14,7 +14,7 @@ public class OptionsParser {
                 case "b" -> directions.add(MoveDirection.BACKWARD);
                 case "r" -> directions.add(MoveDirection.RIGHT);
                 case "l" -> directions.add(MoveDirection.LEFT);
-                default -> throw new IllegalArgumentException("Invalid option: " + arg);
+                default -> throw new IllegalArgumentException("Invalid argument: " + arg);
             }
         }
         return directions;
