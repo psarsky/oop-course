@@ -1,5 +1,6 @@
 package agh.ics.oop.model;
 
+import agh.ics.oop.model.util.Boundary;
 import agh.ics.oop.model.util.IncorrectPositionException;
 import agh.ics.oop.model.util.MapVisualizer;
 
@@ -9,9 +10,10 @@ import java.util.List;
 import java.util.Objects;
 
 public abstract class AbstractWorldMap implements WorldMap {
-
+    protected Vector2d lowerLeft = new Vector2d(Integer.MIN_VALUE, Integer.MIN_VALUE);
+    protected Vector2d upperRight = new Vector2d(Integer.MAX_VALUE, Integer.MAX_VALUE);
     protected final HashMap<Vector2d, Animal> animals;
-    private final MapVisualizer mapVisualizer;
+    protected final MapVisualizer mapVisualizer;
 
     public AbstractWorldMap() {
         animals = new HashMap<>();
@@ -20,7 +22,12 @@ public abstract class AbstractWorldMap implements WorldMap {
 
     @Override
     public String toString() {
-        return mapVisualizer.draw(getLowerLeft(), getUpperRight());
+        return mapVisualizer.draw(getCurrentBounds().lowerLeft(), getCurrentBounds().upperRight());
+    }
+
+    @Override
+    public boolean canMoveTo(Vector2d position) {
+        return withinBoundaries(position) && !isOccupied(position);
     }
 
     @Override
@@ -30,11 +37,6 @@ public abstract class AbstractWorldMap implements WorldMap {
             return true;
         }
         throw new IncorrectPositionException(animal.getPos());
-    }
-
-    @Override
-    public boolean canMoveTo(Vector2d position) {
-        return !isOccupied(position);
     }
 
     @Override
@@ -52,6 +54,11 @@ public abstract class AbstractWorldMap implements WorldMap {
     }
 
     @Override
+    public boolean withinBoundaries(Vector2d position) {
+        return position.follows(lowerLeft) && position.precedes(upperRight);
+    }
+
+    @Override
     public WorldElement objectAt(Vector2d position) {
         return animals.get(position);
     }
@@ -61,6 +68,6 @@ public abstract class AbstractWorldMap implements WorldMap {
         return new ArrayList<>(animals.values());
     }
 
-    public abstract Vector2d getUpperRight();
-    public abstract Vector2d getLowerLeft();
+    @Override
+    public abstract Boundary getCurrentBounds();
 }

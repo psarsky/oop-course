@@ -37,6 +37,11 @@ public interface WorldMap extends MoveValidator {
      */
     boolean isOccupied(Vector2d position);
 
+    /*
+     * Verifies is the given position is within map boundaries.
+     */
+    boolean withinBoundaries(Vector2d position);
+
     /**
      * Return an animal at a given position.
      *
@@ -51,5 +56,10 @@ public interface WorldMap extends MoveValidator {
      * @return list of WorldElement objects.
      */
     List<WorldElement> getElements();
+
+    /*
+     * Return map boundaries.
+     */
+    Boundary getCurrentBounds();
 }
 
