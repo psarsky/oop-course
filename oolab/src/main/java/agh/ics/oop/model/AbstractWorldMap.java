@@ -1,8 +1,11 @@
 package agh.ics.oop.model;
 
+import agh.ics.oop.model.util.IncorrectPositionException;
 import agh.ics.oop.model.util.MapVisualizer;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Objects;
 
 public abstract class AbstractWorldMap implements WorldMap {
@@ -21,12 +24,12 @@ public abstract class AbstractWorldMap implements WorldMap {
     }
 
     @Override
-    public boolean place(Animal animal) {
-        if (!canMoveTo(animal.getPos())) {
-            return false;
+    public boolean place(Animal animal) throws IncorrectPositionException {
+        if (canMoveTo(animal.getPos())) {
+            animals.put(animal.getPos(), animal);
+            return true;
         }
-        animals.put(animal.getPos(), animal);
-        return true;
+        throw new IncorrectPositionException(animal.getPos());
     }
 
     @Override
@@ -51,6 +54,11 @@ public abstract class AbstractWorldMap implements WorldMap {
     @Override
     public WorldElement objectAt(Vector2d position) {
         return animals.get(position);
+    }
+
+    @Override
+    public List<WorldElement> getElements() {
+        return new ArrayList<>(animals.values());
     }
 
     public abstract Vector2d getUpperRight();

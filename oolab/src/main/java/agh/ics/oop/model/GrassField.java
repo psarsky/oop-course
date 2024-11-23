@@ -11,13 +11,12 @@ import static java.lang.Math.sqrt;
 
 public class GrassField extends AbstractWorldMap {
 
-    private final Map<Vector2d, Grass> grass = new HashMap<>();
+    private final Map<Vector2d, Grass> grass;
 
     public GrassField(int grassCount) {
-
         super();
-        Vector2d upperRight = new Vector2d((int)sqrt(grassCount*10), (int)sqrt(grassCount*10));
-        RandomPositionGenerator randomPositionGenerator = new RandomPositionGenerator(upperRight.getX(), upperRight.getY(), grassCount);
+        this.grass = new HashMap<>();
+        RandomPositionGenerator randomPositionGenerator = new RandomPositionGenerator((int) sqrt(grassCount * 10), (int) sqrt(grassCount * 10), grassCount);
 
         for (Vector2d grassPosition : randomPositionGenerator) {
             grass.put(grassPosition, new Grass(grassPosition));
@@ -52,7 +51,7 @@ public class GrassField extends AbstractWorldMap {
 
     @Override
     public List<WorldElement> getElements() {
-        List<WorldElement> worldElements = new ArrayList<>(animals.values());
+        List<WorldElement> worldElements = super.getElements();
         worldElements.addAll(grass.values());
         return worldElements;
     }

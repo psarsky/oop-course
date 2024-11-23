@@ -31,9 +31,4 @@ public class RectangularMap extends AbstractWorldMap {
     public Vector2d getLowerLeft() {
         return lowerLeft;
     }
-
-    @Override
-    public List<WorldElement> getElements() {
-        return new ArrayList<>(animals.values());
-    }
 }
