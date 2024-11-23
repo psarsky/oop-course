@@ -45,7 +45,6 @@ public class Simulation {
                 break;
             }
             map.move(animals.get(animalIndex), move);
-            System.out.println(map);
             animalIndex = (animalIndex + 1) % animalCount;
         }
     }

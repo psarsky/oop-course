@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 
 class OptionsParserTest {
@@ -23,29 +24,17 @@ class OptionsParserTest {
     }
 
     @Test
-    void parseMixedInput() {
-        // given
-        String[] input = {"f", "fdhbfv", "b", "eeee", "r", "", "l", "uwuwuewue"};
-        MoveDirection[] expectedResult = {MoveDirection.FORWARD, MoveDirection.BACKWARD, MoveDirection.RIGHT, MoveDirection.LEFT};
-
-        // when
-        List<MoveDirection> result = OptionsParser.parse(input);
-
-        // then
-        assertArrayEquals(expectedResult, result.toArray());
+    void parseIncorrectInput() {
+        String[] input = {"fdhbfv", "eeee", "", "uwuwuewue"};
+        assertThrows(IllegalArgumentException.class, () -> OptionsParser.parse(input));
     }
 
     @Test
-    void parseIncorrectInput() {
-        // given
-        String[] input = {"fdhbfv", "eeee", "", "uwuwuewue"};
-        MoveDirection[] expectedResult = {};
+    void parseMixedInput() {
+        String[] input = {"f", "fdhbfv", "b", "eeee", "r", "", "l", "uwuwuewue"};
+        MoveDirection[] expectedResult = {MoveDirection.FORWARD, MoveDirection.BACKWARD, MoveDirection.RIGHT, MoveDirection.LEFT};
 
-        // when
-        List<MoveDirection> result = OptionsParser.parse(input);
-
-        // then
-        assertArrayEquals(expectedResult, result.toArray());
+        assertThrows(IllegalArgumentException.class, () -> OptionsParser.parse(input));
     }
 
     @Test

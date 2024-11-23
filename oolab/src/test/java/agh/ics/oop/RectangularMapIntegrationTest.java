@@ -5,6 +5,7 @@ import agh.ics.oop.model.*;
 import java.util.List;
 import java.util.ArrayList;
 
+import agh.ics.oop.model.util.IncorrectPositionException;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -16,9 +17,7 @@ class RectangularMapIntegrationTest {
         RectangularMap map = new RectangularMap(4, 4);
         Animal animal = new Animal(new Vector2d(5, 5));
 
-        boolean result = map.place(animal);
-
-        assertFalse(result);
+        assertThrows(IncorrectPositionException.class, () -> map.place(animal));
     }
 
     @Test
@@ -28,13 +27,15 @@ class RectangularMapIntegrationTest {
         Animal animal1 = new Animal(new Vector2d(2, 2));
         Animal animal2 = new Animal(new Vector2d(2, 2));
 
-        boolean result1 = map.place(animal1);
-        boolean result2 = map.place(animal2);
+        try {
+            assertTrue(map.place(animal1));
+        } catch (IncorrectPositionException e) {
+            fail("Unexpected exception: " + e.getMessage());
+        }
+        assertThrows(IncorrectPositionException.class, () -> map.place(animal2));
 
         WorldElement placedAnimal = map.objectAt(new Vector2d(2, 2));
 
-        assertTrue(result1);
-        assertFalse(result2);
         assertEquals(animal1, placedAnimal);
     }
 
@@ -64,7 +65,7 @@ class RectangularMapIntegrationTest {
     @Test
     public void boundaryConditions() {
 
-        RectangularMap map = new RectangularMap(3, 3);
+        RectangularMap map = new RectangularMap(4, 4);
         List<Vector2d> initialPositions = List.of(new Vector2d(0, 0), new Vector2d(3, 3));
         List<MoveDirection> moves = OptionsParser.parse(new String[]{"b", "f", "l", "r", "f", "f"});
 
@@ -106,7 +107,7 @@ class RectangularMapIntegrationTest {
     @Test
     public void allInOne() {
         // overlapping placement, OOB placement, OOB movement, movement collisions
-        RectangularMap map = new RectangularMap(5, 5);
+        RectangularMap map = new RectangularMap(6, 6);
         List<Vector2d> initialPositions = List.of(new Vector2d(0, 0), new Vector2d(0, 0), new Vector2d(2, 3), new Vector2d(6, 6), new Vector2d(2, 3));
         List<MoveDirection> moves = OptionsParser.parse(new String[]{"f", "l", "r", "f", "f", "l", "l", "f", "f", "f", "l", "r", "f", "r", "f", "f", "f", "f", "l", "f", "f", "f", "f", "r", "f", "f", "f", "f", "f", "f", "f", "f", "f", "f", "f", "f"});
 
