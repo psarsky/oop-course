@@ -37,18 +37,8 @@ public class Simulation implements Runnable {
 
     @Override
     public void run() {
-
-        System.out.println("Simulation: " + Thread.currentThread());
-
-        int animalIndex = 0;
-        int animalCount = animals.size();
-
-        for (MoveDirection move : moves) {
-            if (animalIndex > animalCount - 1) {
-                break;
-            }
-            map.move(animals.get(animalIndex), move);
-            animalIndex = (animalIndex + 1) % animalCount;
+        for(int i = 0; i < moves.size(); i++){
+            map.move(animals.get(i % animals.size()), moves.get(i));
         }
     }
 

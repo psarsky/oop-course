@@ -2,14 +2,19 @@ package agh.ics.oop;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 public class SimulationEngine {
     private final List<Simulation> simulations;
     private final List<Thread> threads;
+    private final ExecutorService threadPool;
 
     public SimulationEngine(List<Simulation> simulations) {
         this.simulations = simulations;
         this.threads = new ArrayList<>();
+        this.threadPool = Executors.newFixedThreadPool(4);
     }
 
     public void runSync() {
@@ -21,18 +26,30 @@ public class SimulationEngine {
     public void runAsync() {
         for (Simulation simulation : simulations) {
             Thread engineThread = new Thread(simulation);
-            engineThread.start();
             threads.add(engineThread);
+            engineThread.start();
         }
+        awaitSimulationsEnd();
+    }
+
+    public void runAsyncInThreadPool() {
+        for (Simulation simulation : simulations) {
+            threadPool.submit(simulation);
+        }
+        awaitSimulationsEnd();
     }
 
     public void awaitSimulationsEnd() {
-        for (Thread thread : threads) {
-            try {
+        try {
+            for (Thread thread : threads) {
                 thread.join();
-            } catch (InterruptedException e) {
-                System.out.println("Symulacja przerwana.");
             }
+            threadPool.shutdown();
+            if (!threadPool.awaitTermination(10, TimeUnit.SECONDS)) {
+                threadPool.shutdownNow();
+            }
+        } catch (InterruptedException e) {
+            System.out.println("Symulacja zatrzymana.");
         }
     }
 }

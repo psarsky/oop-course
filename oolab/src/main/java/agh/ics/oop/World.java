@@ -14,9 +14,7 @@ public class World {
             List<MoveDirection> directions = parse(args);
             List<Vector2d> positions = List.of(new Vector2d(2, 2), new Vector2d(3, 4));
             SimulationEngine engine = getSimulationEngine(positions, directions);
-            engine.runAsync();
-            engine.awaitSimulationsEnd();
-            System.out.println("Main: " + Thread.currentThread());
+            engine.runAsyncInThreadPool();
         } catch (IllegalArgumentException e) {
             System.out.println("IllegalArgumentException: " + e.getMessage());
             return;
@@ -28,13 +26,7 @@ public class World {
         List<Simulation> simulations = new ArrayList<>();
         ConsoleMapDisplay observer = new ConsoleMapDisplay();
         for (int i = 0; i < 1000; i++) {
-            AbstractWorldMap map;
-            if (i % 2 == 0) {
-                 map = new RectangularMap(8, 8);
-            }
-            else {
-                map = new GrassField(10);
-            }
+            AbstractWorldMap map = i % 2 == 0 ? new GrassField(10) : new RectangularMap(8, 8);
             map.addObserver(observer);
             Simulation simulation = new Simulation(positions, directions, map);
             simulations.add(simulation);
