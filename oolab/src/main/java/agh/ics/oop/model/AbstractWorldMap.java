@@ -4,10 +4,7 @@ import agh.ics.oop.model.util.Boundary;
 import agh.ics.oop.model.util.IncorrectPositionException;
 import agh.ics.oop.model.util.MapVisualizer;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 public abstract class AbstractWorldMap implements WorldMap {
     protected Vector2d lowerLeft = new Vector2d(Integer.MIN_VALUE, Integer.MIN_VALUE);
@@ -15,11 +12,13 @@ public abstract class AbstractWorldMap implements WorldMap {
     protected final HashMap<Vector2d, Animal> animals;
     protected final MapVisualizer mapVisualizer;
     protected final List<MapChangeListener> observers;
+    protected final UUID uuid;
 
     public AbstractWorldMap() {
         this.animals = new HashMap<>();
         this.mapVisualizer = new MapVisualizer(this);
         this.observers = new ArrayList<>();
+        this.uuid = UUID.randomUUID();
     }
 
     public void addObserver(MapChangeListener observer) {
@@ -47,13 +46,14 @@ public abstract class AbstractWorldMap implements WorldMap {
     }
 
     @Override
-    public boolean place(Animal animal) throws IncorrectPositionException {
+    public void place(Animal animal) throws IncorrectPositionException {
         if (canMoveTo(animal.getPos())) {
             animals.put(animal.getPos(), animal);
             notifyObservers("New animal placed at " + animal.getPos() + ".");
-            return true;
         }
-        throw new IncorrectPositionException(animal.getPos());
+        else {
+            throw new IncorrectPositionException(animal.getPos());
+        }
     }
 
     @Override
@@ -87,6 +87,9 @@ public abstract class AbstractWorldMap implements WorldMap {
         return new ArrayList<>(animals.values());
     }
 
-    @Override
-    public abstract Boundary getCurrentBounds();
+    protected abstract Boundary getCurrentBounds();
+
+    public UUID getID() {
+        return uuid;
+    }
 }

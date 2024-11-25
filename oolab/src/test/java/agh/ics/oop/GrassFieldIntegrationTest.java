@@ -72,7 +72,7 @@ class GrassFieldIntegrationTest {
         GrassField map = new GrassField(20);
         positions.add(new Vector2d(15,15));
 
-        Simulation simulation = new Simulation(positions,moves,map);
+        Simulation simulation = new Simulation(positions, moves, map);
         simulation.run();
 
         assertEquals(new Vector2d(18,16), map.getCurrentBounds().upperRight());
@@ -99,7 +99,7 @@ class GrassFieldIntegrationTest {
         Animal animal2 = new Animal(new Vector2d(2, 2));
 
         try {
-            assertTrue(map.place(animal1));
+            map.place(animal1);
         } catch (IncorrectPositionException e) {
             fail("Unexpected exception: " + e.getMessage());
         }

@@ -19,14 +19,14 @@ public class Simulation {
         this.animals = new ArrayList<>();
 
         for (Vector2d pos : initialPositions) {
+            Animal animal = new Animal(pos);
             try {
-                Animal animal = new Animal(pos);
-                if (this.map.place(animal)) {
-                    animals.add(animal);
-                }
+                this.map.place(animal);
             } catch (IncorrectPositionException e) {
                 System.out.println("IncorrectPositionException: " + e.getMessage());
+                continue;
             }
+            this.animals.add(animal);
         }
     }
 
