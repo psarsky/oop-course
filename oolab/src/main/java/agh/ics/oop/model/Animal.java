@@ -38,15 +38,12 @@ public class Animal implements WorldElement {
         }
     }
 
-    public boolean isAt(Vector2d position) {
-        return this.position.equals(position);
+    @Override
+    public Vector2d getPos() {
+        return position;
     }
 
     public MapDirection getDir() {
         return direction;
-    }
-
-    public Vector2d getPos() {
-        return position;
     }
 }

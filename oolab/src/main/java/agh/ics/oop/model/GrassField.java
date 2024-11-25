@@ -1,8 +1,8 @@
 package agh.ics.oop.model;
 
+import agh.ics.oop.model.util.Boundary;
 import agh.ics.oop.model.util.RandomPositionGenerator;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.HashMap;
 import java.util.Map;
@@ -11,14 +11,13 @@ import static java.lang.Math.sqrt;
 
 public class GrassField extends AbstractWorldMap {
 
-    private final Map<Vector2d, Grass> grass = new HashMap<>();
+    private final Map<Vector2d, Grass> grass;
 
     public GrassField(int grassCount) {
-
         super();
-        Vector2d upperRight = new Vector2d((int)sqrt(grassCount*10), (int)sqrt(grassCount*10));
-        RandomPositionGenerator randomPositionGenerator = new RandomPositionGenerator(upperRight.getX(), upperRight.getY(), grassCount);
+        this.grass = new HashMap<>();
 
+        RandomPositionGenerator randomPositionGenerator = new RandomPositionGenerator((int) sqrt(grassCount * 10), (int) sqrt(grassCount * 10), grassCount);
         for (Vector2d grassPosition : randomPositionGenerator) {
             grass.put(grassPosition, new Grass(grassPosition));
         }
@@ -33,27 +32,21 @@ public class GrassField extends AbstractWorldMap {
     }
 
     @Override
-    public Vector2d getUpperRight() {
-        Vector2d upperRight = new Vector2d(0, 0);
-        for (WorldElement we : getElements()) {
-            upperRight = we.getPos().upperRight(upperRight);
-        }
-        return upperRight.add(new Vector2d(1, 1));
-    }
-
-    @Override
-    public Vector2d getLowerLeft() {
-        Vector2d lowerLeft = new Vector2d(0, 0);
-        for (WorldElement we : getElements()) {
-            lowerLeft = we.getPos().lowerLeft(lowerLeft);
-        }
-        return lowerLeft.subtract(new Vector2d(1, 1));
-    }
-
-    @Override
     public List<WorldElement> getElements() {
-        List<WorldElement> worldElements = new ArrayList<>(animals.values());
+        List<WorldElement> worldElements = super.getElements();
         worldElements.addAll(grass.values());
         return worldElements;
+    }
+
+    @Override
+    public Boundary getCurrentBounds() {
+        Vector2d ur = new Vector2d(lowerLeft.getX(), lowerLeft.getY());
+        Vector2d ll = new Vector2d(upperRight.getX(), upperRight.getY());
+
+        for (WorldElement we : getElements()) {
+            ur = ur.upperRight(we.getPos());
+            ll = ll.lowerLeft(we.getPos());
+        }
+        return new Boundary(ll, ur);
     }
 }

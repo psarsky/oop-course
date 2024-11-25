@@ -1,45 +1,69 @@
 package agh.ics.oop.model;
 
+import agh.ics.oop.model.util.Boundary;
+import agh.ics.oop.model.util.IncorrectPositionException;
 import agh.ics.oop.model.util.MapVisualizer;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Objects;
 
 public abstract class AbstractWorldMap implements WorldMap {
-
+    protected Vector2d lowerLeft = new Vector2d(Integer.MIN_VALUE, Integer.MIN_VALUE);
+    protected Vector2d upperRight = new Vector2d(Integer.MAX_VALUE, Integer.MAX_VALUE);
     protected final HashMap<Vector2d, Animal> animals;
-    private final MapVisualizer mapVisualizer;
+    protected final MapVisualizer mapVisualizer;
+    protected final List<MapChangeListener> observers;
 
     public AbstractWorldMap() {
-        animals = new HashMap<>();
-        mapVisualizer = new MapVisualizer(this);
+        this.animals = new HashMap<>();
+        this.mapVisualizer = new MapVisualizer(this);
+        this.observers = new ArrayList<>();
+    }
+
+    public void addObserver(MapChangeListener observer) {
+        observers.add(observer);
+    }
+
+    public void removeObserver(MapChangeListener observer) {
+        observers.remove(observer);
+    }
+
+    protected void notifyObservers(String message) {
+        for (MapChangeListener observer : observers) {
+            observer.mapChanged(this, message);
+        }
     }
 
     @Override
     public String toString() {
-        return mapVisualizer.draw(getLowerLeft(), getUpperRight());
-    }
-
-    @Override
-    public boolean place(Animal animal) {
-        if (!canMoveTo(animal.getPos())) {
-            return false;
-        }
-        animals.put(animal.getPos(), animal);
-        return true;
+        return mapVisualizer.draw(getCurrentBounds().lowerLeft(), getCurrentBounds().upperRight());
     }
 
     @Override
     public boolean canMoveTo(Vector2d position) {
-        return !isOccupied(position);
+        return withinBoundaries(position) && !isOccupied(position);
+    }
+
+    @Override
+    public boolean place(Animal animal) throws IncorrectPositionException {
+        if (canMoveTo(animal.getPos())) {
+            animals.put(animal.getPos(), animal);
+            notifyObservers("New animal placed at " + animal.getPos() + ".");
+            return true;
+        }
+        throw new IncorrectPositionException(animal.getPos());
     }
 
     @Override
     public void move(Animal animal, MoveDirection direction) {
         if (Objects.equals(objectAt(animal.getPos()), animal)) {
+            Vector2d oldPos = animal.getPos();
             animals.remove(animal.getPos());
             animal.move(direction, this);
             animals.put(animal.getPos(), animal);
+            notifyObservers("Animal moved from " + oldPos + " to " + animal.getPos() + ".");
         }
     }
 
@@ -49,10 +73,20 @@ public abstract class AbstractWorldMap implements WorldMap {
     }
 
     @Override
+    public boolean withinBoundaries(Vector2d position) {
+        return position.follows(lowerLeft) && position.precedes(upperRight);
+    }
+
+    @Override
     public WorldElement objectAt(Vector2d position) {
         return animals.get(position);
     }
 
-    public abstract Vector2d getUpperRight();
-    public abstract Vector2d getLowerLeft();
+    @Override
+    public List<WorldElement> getElements() {
+        return new ArrayList<>(animals.values());
+    }
+
+    @Override
+    public abstract Boundary getCurrentBounds();
 }

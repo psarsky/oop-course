@@ -1,6 +1,7 @@
 package agh.ics.oop;
 
 import agh.ics.oop.model.*;
+import agh.ics.oop.model.util.IncorrectPositionException;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
@@ -60,7 +61,7 @@ class GrassFieldIntegrationTest {
         Simulation simulation = new Simulation(positions, moves, map);
         simulation.run();
 
-        assertEquals(new Vector2d(21,16), map.getUpperRight());
+        assertEquals(new Vector2d(20,15), map.getCurrentBounds().upperRight());
     }
 
     @Test
@@ -74,7 +75,7 @@ class GrassFieldIntegrationTest {
         Simulation simulation = new Simulation(positions,moves,map);
         simulation.run();
 
-        assertEquals(new Vector2d(19,17), map.getUpperRight());
+        assertEquals(new Vector2d(18,16), map.getCurrentBounds().upperRight());
     }
     @Test
     public void mapShrinks() {
@@ -87,7 +88,7 @@ class GrassFieldIntegrationTest {
 
         simulation.run();
 
-        assertEquals(new Vector2d(19,16), map.getUpperRight());
+        assertEquals(new Vector2d(18,15), map.getCurrentBounds().upperRight());
     }
 
     @Test
@@ -97,13 +98,15 @@ class GrassFieldIntegrationTest {
         Animal animal1 = new Animal(new Vector2d(2, 2));
         Animal animal2 = new Animal(new Vector2d(2, 2));
 
-        boolean result1 = map.place(animal1);
-        boolean result2 = map.place(animal2);
+        try {
+            assertTrue(map.place(animal1));
+        } catch (IncorrectPositionException e) {
+            fail("Unexpected exception: " + e.getMessage());
+        }
+        assertThrows(IncorrectPositionException.class, () -> map.place(animal2));
 
         WorldElement placedAnimal = map.objectAt(new Vector2d(2, 2));
 
-        assertTrue(result1);
-        assertFalse(result2);
         assertEquals(animal1, placedAnimal);
     }
 

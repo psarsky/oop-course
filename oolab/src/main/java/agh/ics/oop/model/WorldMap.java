@@ -1,5 +1,8 @@
 package agh.ics.oop.model;
 
+import agh.ics.oop.model.util.Boundary;
+import agh.ics.oop.model.util.IncorrectPositionException;
+
 import java.util.List;
 
 /**
@@ -16,7 +19,7 @@ public interface WorldMap extends MoveValidator {
      * @param animal The animal to place on the map.
      * @return True if the animal was placed. The animal cannot be placed if the move is not valid.
      */
-    boolean place(Animal animal);
+    boolean place(Animal animal) throws IncorrectPositionException;
 
     /**
      * Moves an animal (if it is present on the map) according to specified direction.
@@ -34,6 +37,11 @@ public interface WorldMap extends MoveValidator {
      */
     boolean isOccupied(Vector2d position);
 
+    /*
+     * Verifies is the given position is within map boundaries.
+     */
+    boolean withinBoundaries(Vector2d position);
+
     /**
      * Return an animal at a given position.
      *
@@ -48,5 +56,10 @@ public interface WorldMap extends MoveValidator {
      * @return list of WorldElement objects.
      */
     List<WorldElement> getElements();
+
+    /*
+     * Return map boundaries.
+     */
+    Boundary getCurrentBounds();
 }
 
