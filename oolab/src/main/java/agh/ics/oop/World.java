@@ -18,8 +18,8 @@ public class World {
             map1.addObserver(new ConsoleMapDisplay());
             map2.addObserver(new ConsoleMapDisplay());
             Simulation simulation1 = new Simulation(positions, directions, map1);
-            Simulation simulation2 = new Simulation(positions, directions, map2);
             simulation1.run();
+            Simulation simulation2 = new Simulation(positions, directions, map2);
             simulation2.run();
         } catch (IllegalArgumentException e) {
             System.out.println("IllegalArgumentException: " + e.getMessage());
