@@ -28,7 +28,7 @@ class RectangularMapIntegrationTest {
         Animal animal2 = new Animal(new Vector2d(2, 2));
 
         try {
-            assertTrue(map.place(animal1));
+            map.place(animal1);
         } catch (IncorrectPositionException e) {
             fail("Unexpected exception: " + e.getMessage());
         }
