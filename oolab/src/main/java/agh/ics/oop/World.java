@@ -23,7 +23,7 @@ public class World {
         System.out.println("STOP");
     }
 
-    private static SimulationEngine getSimulationEngine(List<Vector2d> positions, List<MoveDirection> directions) {
+    static SimulationEngine getSimulationEngine(List<Vector2d> positions, List<MoveDirection> directions) {
         List<Simulation> simulations = new ArrayList<>();
         ConsoleMapDisplay observer = new ConsoleMapDisplay();
         for (int i = 0; i < 1000; i++) {
