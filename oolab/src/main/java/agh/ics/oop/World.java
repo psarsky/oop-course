@@ -15,6 +15,7 @@ public class World {
             List<Vector2d> positions = List.of(new Vector2d(2, 2), new Vector2d(3, 4));
             SimulationEngine engine = getSimulationEngine(positions, directions);
             engine.runAsyncInThreadPool();
+            engine.awaitSimulationsEnd();
         } catch (IllegalArgumentException e) {
             System.out.println("IllegalArgumentException: " + e.getMessage());
             return;

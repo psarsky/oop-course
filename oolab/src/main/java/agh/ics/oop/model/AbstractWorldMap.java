@@ -12,13 +12,13 @@ public abstract class AbstractWorldMap implements WorldMap {
     protected final HashMap<Vector2d, Animal> animals;
     protected final MapVisualizer mapVisualizer;
     protected final List<MapChangeListener> observers;
-    protected final UUID uuid;
+    protected final UUID id;
 
     public AbstractWorldMap() {
         this.animals = new HashMap<>();
         this.mapVisualizer = new MapVisualizer(this);
         this.observers = new ArrayList<>();
-        this.uuid = UUID.randomUUID();
+        this.id = UUID.randomUUID();
     }
 
     public void addObserver(MapChangeListener observer) {
@@ -90,6 +90,6 @@ public abstract class AbstractWorldMap implements WorldMap {
     protected abstract Boundary getCurrentBounds();
 
     public UUID getID() {
-        return uuid;
+        return id;
     }
 }

@@ -9,7 +9,7 @@ import java.util.concurrent.TimeUnit;
 public class SimulationEngine {
     private final List<Simulation> simulations;
     private final List<Thread> threads;
-    private final ExecutorService threadPool;
+    private ExecutorService threadPool;
 
     public SimulationEngine(List<Simulation> simulations) {
         this.simulations = simulations;
@@ -29,14 +29,16 @@ public class SimulationEngine {
             threads.add(engineThread);
             engineThread.start();
         }
-        awaitSimulationsEnd();
     }
 
     public void runAsyncInThreadPool() {
+        if (threadPool != null) {
+            threadPool.shutdown();
+        }
+        threadPool = Executors.newFixedThreadPool(4);
         for (Simulation simulation : simulations) {
             threadPool.submit(simulation);
         }
-        awaitSimulationsEnd();
     }
 
     public void awaitSimulationsEnd() {
