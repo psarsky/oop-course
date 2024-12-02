@@ -1,19 +1,20 @@
 package agh.ics.oop;
 
-import agh.ics.oop.model.*;
+import agh.ics.oop.model.Animal;
+import agh.ics.oop.model.MoveDirection;
+import agh.ics.oop.model.Vector2d;
+import agh.ics.oop.model.WorldMap;
 import agh.ics.oop.model.util.IncorrectPositionException;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class Simulation implements Runnable {
-
     private final List<Animal> animals;
     private final List<MoveDirection> moves;
     private final WorldMap map;
 
     public Simulation(List<Vector2d> initialPositions, List<MoveDirection> moves, WorldMap map) {
-
         this.moves = moves;
         this.map = map;
         this.animals = new ArrayList<>();
@@ -42,7 +43,7 @@ public class Simulation implements Runnable {
             try {
                 Thread.sleep(500);
             } catch (InterruptedException e) {
-                System.out.println("Symulacja zatrzymana.");
+                e.printStackTrace();
             }
         }
     }
