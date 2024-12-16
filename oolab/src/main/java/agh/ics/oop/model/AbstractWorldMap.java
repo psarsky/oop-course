@@ -1,6 +1,5 @@
 package agh.ics.oop.model;
 
-import agh.ics.oop.model.util.Boundary;
 import agh.ics.oop.model.util.IncorrectPositionException;
 import agh.ics.oop.model.util.MapVisualizer;
 
@@ -86,8 +85,6 @@ public abstract class AbstractWorldMap implements WorldMap {
     public List<WorldElement> getElements() {
         return new ArrayList<>(animals.values());
     }
-
-    protected abstract Boundary getCurrentBounds();
 
     public UUID getID() {
         return id;
