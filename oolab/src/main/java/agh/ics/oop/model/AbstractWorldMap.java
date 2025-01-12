@@ -4,6 +4,7 @@ import agh.ics.oop.model.util.IncorrectPositionException;
 import agh.ics.oop.model.util.MapVisualizer;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 public abstract class AbstractWorldMap implements WorldMap {
     protected Vector2d lowerLeft = new Vector2d(Integer.MIN_VALUE, Integer.MIN_VALUE);
@@ -89,11 +90,10 @@ public abstract class AbstractWorldMap implements WorldMap {
 
     @Override
     public Collection<Animal> getOrderedAnimals() {
-        Comparator<Animal> comparator = Comparator
-                .comparing((Animal animal) -> animal.getPos().getX())
-                .thenComparing((Animal animal) -> animal.getPos().getY());
-        List<Animal> sortedAnimals = new ArrayList<>(animals.values().stream().toList());
-        sortedAnimals.sort(comparator);
-        return sortedAnimals;
+        return animals.values().stream()
+                .sorted(Comparator
+                    .comparingInt((WorldElement a) -> a.getPos().getX())
+                    .thenComparingInt(a -> a.getPos().getY()))
+                .collect(Collectors.toList());
     }
 }

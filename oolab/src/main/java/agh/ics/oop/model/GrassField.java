@@ -3,9 +3,11 @@ package agh.ics.oop.model;
 import agh.ics.oop.model.util.Boundary;
 import agh.ics.oop.model.util.RandomPositionGenerator;
 
-import java.util.List;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static java.lang.Math.sqrt;
 
@@ -33,9 +35,9 @@ public class GrassField extends AbstractWorldMap {
 
     @Override
     public List<WorldElement> getElements() {
-        List<WorldElement> worldElements = super.getElements();
-        worldElements.addAll(grass.values());
-        return worldElements;
+        return Stream
+                .concat(super.getElements().stream(), grass.values().stream())
+                .collect(Collectors.toList());
     }
 
     @Override
