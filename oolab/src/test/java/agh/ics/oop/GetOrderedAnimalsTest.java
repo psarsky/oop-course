@@ -1,14 +1,15 @@
 package agh.ics.oop;
 
-
-import agh.ics.oop.model.*;
+import agh.ics.oop.model.AbstractWorldMap;
+import agh.ics.oop.model.Animal;
+import agh.ics.oop.model.GrassField;
+import agh.ics.oop.model.Vector2d;
 import agh.ics.oop.model.util.IncorrectPositionException;
 import org.junit.jupiter.api.Test;
 
 import java.util.Collection;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
+import static org.junit.jupiter.api.Assertions.*;
 class GetOrderedAnimalsTest {
     @Test
     void getOrderedAnimals1() {

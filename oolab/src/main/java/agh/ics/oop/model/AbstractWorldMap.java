@@ -54,7 +54,8 @@ public abstract class AbstractWorldMap implements WorldMap {
 
     @Override
     public void move(Animal animal, MoveDirection direction) {
-        if (Objects.equals(objectAt(animal.getPos()), animal)) {
+        if (Objects.equals(objectAt(animal.getPos()).isPresent()
+                ? objectAt(animal.getPos()).get() : null, animal)) {
             Vector2d oldPos = animal.getPos();
             animals.remove(animal.getPos());
             animal.move(direction, this);
@@ -74,8 +75,8 @@ public abstract class AbstractWorldMap implements WorldMap {
     }
 
     @Override
-    public WorldElement objectAt(Vector2d position) {
-        return animals.get(position);
+    public Optional<WorldElement> objectAt(Vector2d position) {
+        return Optional.ofNullable(animals.get(position));
     }
 
     @Override
