@@ -18,7 +18,8 @@
         <HBox spacing="10" alignment="CENTER">
             <TextField fx:id="moveList" promptText="Enter moves"/>
             <Label fx:id="moveDescription" textAlignment="CENTER"/>
-            <Button text="Start" onAction="#startSimulation"/>
+            <Button fx:id="startButton" text="Start" onAction="#startSimulation"/>
+            <Button fx:id="newSimulationButton" text="New simulation" onAction="#newSimulation"/>
         </HBox>
     </bottom>
 </BorderPane>

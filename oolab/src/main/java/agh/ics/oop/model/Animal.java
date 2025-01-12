@@ -5,11 +5,6 @@ public class Animal implements WorldElement {
     private MapDirection direction;
     private Vector2d position;
 
-    public Animal() {
-        this.direction = MapDirection.NORTH;
-        this.position = new Vector2d(2, 2);
-    }
-
     public Animal(Vector2d position) {
         this.direction = MapDirection.NORTH;
         this.position = position;

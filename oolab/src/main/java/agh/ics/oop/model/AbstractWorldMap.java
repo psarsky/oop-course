@@ -24,10 +24,6 @@ public abstract class AbstractWorldMap implements WorldMap {
         observers.add(observer);
     }
 
-    public void removeObserver(MapChangeListener observer) {
-        observers.remove(observer);
-    }
-
     protected void notifyObservers(String message) {
         for (MapChangeListener observer : observers) {
             observer.mapChanged(this, message);

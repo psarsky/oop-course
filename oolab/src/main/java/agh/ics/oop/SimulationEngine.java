@@ -6,6 +6,8 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
+@SuppressWarnings("unused")
+
 public class SimulationEngine {
     private final List<Simulation> simulations;
     private final List<Thread> threads;

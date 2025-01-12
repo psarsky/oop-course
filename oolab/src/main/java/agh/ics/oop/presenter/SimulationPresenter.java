@@ -1,23 +1,28 @@
 package agh.ics.oop.presenter;
 
 import agh.ics.oop.Simulation;
+import agh.ics.oop.SimulationApp;
 import agh.ics.oop.SimulationEngine;
 import agh.ics.oop.model.*;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.geometry.HPos;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.RowConstraints;
 
-import java.util.Arrays;
 import java.util.List;
 
 import static agh.ics.oop.OptionsParser.parse;
 
 public class SimulationPresenter implements MapChangeListener {
+    @FXML
+    public Button startButton;
+    @FXML
+    public Button newSimulationButton;
     @FXML
     private GridPane mapGrid;
     @FXML
@@ -26,6 +31,11 @@ public class SimulationPresenter implements MapChangeListener {
     private TextField moveList;
     private WorldMap map;
 
+    @FXML
+    private void newSimulation() {
+        SimulationApp app = new SimulationApp(moveList.getText());
+        app.run();
+    }
 
     @FXML
     private void startSimulation() {
@@ -36,7 +46,6 @@ public class SimulationPresenter implements MapChangeListener {
         map.addObserver(this);
         Simulation simulation = new Simulation(positions, directions, map);
         SimulationEngine engine = new SimulationEngine(List.of(simulation));
-        moveDescription.setText("Simulation started with moves: " + Arrays.toString(args));
         engine.runAsyncInThreadPool();
     }
 
