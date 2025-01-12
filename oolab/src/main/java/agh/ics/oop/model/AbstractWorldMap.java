@@ -82,7 +82,18 @@ public abstract class AbstractWorldMap implements WorldMap {
         return new ArrayList<>(animals.values());
     }
 
+    @Override
     public UUID getID() {
         return id;
+    }
+
+    @Override
+    public Collection<Animal> getOrderedAnimals() {
+        Comparator<Animal> comparator = Comparator
+                .comparing((Animal animal) -> animal.getPos().getX())
+                .thenComparing((Animal animal) -> animal.getPos().getY());
+        List<Animal> sortedAnimals = new ArrayList<>(animals.values().stream().toList());
+        sortedAnimals.sort(comparator);
+        return sortedAnimals;
     }
 }
