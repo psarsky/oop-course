@@ -14,6 +14,8 @@ import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.RowConstraints;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import static agh.ics.oop.OptionsParser.parse;
@@ -44,6 +46,10 @@ public class SimulationPresenter implements MapChangeListener {
         List<Vector2d> positions = List.of(new Vector2d(2, 2), new Vector2d(3, 4));
         AbstractWorldMap map = new GrassField(10);
         map.addObserver(this);
+        map.addObserver((changedMap, msg) -> {
+            LocalDateTime dateTime = LocalDateTime.now();
+            System.out.println(dateTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS")) + " | " + changedMap.getID() + ": " + msg);
+        });
         Simulation simulation = new Simulation(positions, directions, map);
         SimulationEngine engine = new SimulationEngine(List.of(simulation));
         engine.runAsyncInThreadPool();
@@ -94,11 +100,11 @@ public class SimulationPresenter implements MapChangeListener {
         for (int i = boundLeft; i <= boundRight; i++) {
             for (int j = boundTop; j >= boundBottom; j--) {
                 Vector2d pos = new Vector2d(i, j);
-                if (map.objectAt(pos) == null) {
+                if (map.objectAt(pos).isEmpty()) {
                     mapGrid.add(new Label(" "), i - boundLeft + 1, boundTop - j + 1);
                 }
                 else {
-                    mapGrid.add(new Label(map.objectAt(pos).toString()), i - boundLeft + 1, boundTop - j + 1);
+                    mapGrid.add(new Label(map.objectAt(pos).get().toString()), i - boundLeft + 1, boundTop - j + 1);
                 }
                 GridPane.setHalignment(mapGrid.getChildren().getLast(), HPos.CENTER);
             }

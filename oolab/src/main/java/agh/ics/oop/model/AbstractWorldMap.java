@@ -4,6 +4,7 @@ import agh.ics.oop.model.util.IncorrectPositionException;
 import agh.ics.oop.model.util.MapVisualizer;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 public abstract class AbstractWorldMap implements WorldMap {
     protected Vector2d lowerLeft = new Vector2d(Integer.MIN_VALUE, Integer.MIN_VALUE);
@@ -53,7 +54,8 @@ public abstract class AbstractWorldMap implements WorldMap {
 
     @Override
     public void move(Animal animal, MoveDirection direction) {
-        if (Objects.equals(objectAt(animal.getPos()), animal)) {
+        if (Objects.equals(objectAt(animal.getPos()).isPresent()
+                ? objectAt(animal.getPos()).get() : null, animal)) {
             Vector2d oldPos = animal.getPos();
             animals.remove(animal.getPos());
             animal.move(direction, this);
@@ -73,8 +75,8 @@ public abstract class AbstractWorldMap implements WorldMap {
     }
 
     @Override
-    public WorldElement objectAt(Vector2d position) {
-        return animals.get(position);
+    public Optional<WorldElement> objectAt(Vector2d position) {
+        return Optional.ofNullable(animals.get(position));
     }
 
     @Override
@@ -82,7 +84,17 @@ public abstract class AbstractWorldMap implements WorldMap {
         return new ArrayList<>(animals.values());
     }
 
+    @Override
     public UUID getID() {
         return id;
+    }
+
+    @Override
+    public Collection<Animal> getOrderedAnimals() {
+        return animals.values().stream()
+                .sorted(Comparator
+                    .comparingInt((WorldElement a) -> a.getPos().getX())
+                    .thenComparingInt(a -> a.getPos().getY()))
+                .collect(Collectors.toList());
     }
 }

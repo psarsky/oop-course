@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 class GrassFieldIntegrationTest {
@@ -105,9 +106,9 @@ class GrassFieldIntegrationTest {
         }
         assertThrows(IncorrectPositionException.class, () -> map.place(animal2));
 
-        WorldElement placedAnimal = map.objectAt(new Vector2d(2, 2));
+        Optional<WorldElement> placedAnimal = map.objectAt(new Vector2d(2, 2));
 
-        assertEquals(animal1, placedAnimal);
+        assertEquals(animal1, placedAnimal.orElse(null));
     }
 
     @Test
