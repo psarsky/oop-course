@@ -4,7 +4,10 @@ import java.util.*
 import kotlin.math.max
 import kotlin.math.min
 
-class Vector2d(val x: Int, val y: Int) {
+class Vector2d(
+    val x: Int,
+    val y: Int
+) {
 
     fun upperRight(other: Vector2d): Vector2d = Vector2d(max(x, other.x), max(y, other.y))
 
