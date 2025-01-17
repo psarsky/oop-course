@@ -1,5 +1,6 @@
 package util
 
+import util.MapDirection.*
 import java.util.*
 import kotlin.math.max
 import kotlin.math.min
@@ -8,7 +9,6 @@ class Vector2d(
     val x: Int,
     val y: Int
 ) {
-
     fun upperRight(other: Vector2d): Vector2d = Vector2d(max(x, other.x), max(y, other.y))
 
     fun lowerLeft(other: Vector2d): Vector2d = Vector2d(min(x, other.x), min(y, other.y))
@@ -35,4 +35,11 @@ class Vector2d(
         other as Vector2d
         return x == other.x && y == other.y
     }
+}
+
+fun MapDirection.toUnitVector(): Vector2d = when (this) {
+    NORTH -> Vector2d(0, 1)
+    EAST -> Vector2d(1, 0)
+    SOUTH -> Vector2d(0, -1)
+    WEST -> Vector2d(-1, 0)
 }

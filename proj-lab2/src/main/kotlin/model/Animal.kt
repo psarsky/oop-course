@@ -3,6 +3,7 @@ package model
 import util.MapDirection
 import util.MoveDirection
 import util.Vector2d
+import util.toUnitVector
 
 class Animal(
     var position: Vector2d,

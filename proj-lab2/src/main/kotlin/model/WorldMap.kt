@@ -1,7 +1,5 @@
 package model
 
-import java.util.*
-import util.MoveDirection
 import util.Vector2d
 
 interface WorldMap {
