@@ -5,7 +5,7 @@ import java.util.*
 import kotlin.math.max
 import kotlin.math.min
 
-class Vector2d(
+data class Vector2d(
     val x: Int,
     val y: Int
 ) {
